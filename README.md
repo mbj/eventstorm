@@ -64,7 +64,7 @@ Lost-Events:
 
 There are many reasons an event can be lost. Crashed Database, broken Network, 
 bug in software etc.
-We will not add an reliability layer on top of ZMQ. A EventSource dos not now 
+We will not add an reliability layer on top of ZMQ. A EventSource dos not know 
 when or if a message arrives.
 
 Roadmap:
