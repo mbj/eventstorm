@@ -2,20 +2,20 @@ Evenstorm
 =========
 
 Eventstorm is a pluggable event aggregation and storage framework 
-in development. Our intention is to build a layer above ZMQ defining 
+in development. Our intention is to build a layer on top of ZMQ defining 
 semantics and standard components/interfaces.
 
-Eventstorm intention is to support reporting and analysis. It is not 
+Eventstorm will support reporting and analysis. It is not 
 a traditional message broker / bus. It does not offer any QOS guarantee nor 
-reliability. Its only purpose is to aggregate events for later or real-time 
+reliability. Its purpose is to aggregate events for later or real-time 
 aggregation and consumption.
 
 Event:
 ------
 
-An event can be any object that can be represented as an BSON Object.
+An event can be any object that can be represented as a BSON Object.
 
-Events examples:
+Event examples:
 
 * HTTP-Hit
 * SSH-Login
@@ -64,7 +64,7 @@ Lost-Events:
 
 There are many reasons an event can be lost. Crashed Database, broken Network, 
 bug in software etc.
-We will not add an reliability layer on top of ZMQ. A EventSource dos not know 
+We will not add any reliability layer on top of ZMQ. An EventSource dos not know 
 when or if a message arrives.
 
 Roadmap:
@@ -72,5 +72,4 @@ Roadmap:
 
 We'll focus on EventSource libraries and the database EventSinks. 
 Once this is ready we'll try to build some fancy nice realtime graphs.
-Since the data graphed should also be available later at this point the routers 
-are build. 
+With that come the router, as the data should be preserved for later analyses.
