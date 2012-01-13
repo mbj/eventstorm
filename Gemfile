@@ -1,5 +1,8 @@
 source :rubyforge
 
 gem 'bson_ext'
-gem 'mongo'
-gem 'zmq'
+gem 'ffi-rzmq'
+
+group 'mongo' do
+  gem 'mongo'
+end
