@@ -17,5 +17,6 @@ until $stdin.eof? do
   end
 end
 
+publisher.send_string("end - #{Time.now}")
 publisher.close
 puts "killed"
