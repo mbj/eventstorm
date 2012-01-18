@@ -9,3 +9,9 @@ has to be set:
 ```
 accesslog.filename = "|/export/home/gibheer/project/eventstorm/clients/lighttpd/lighttpd.rb"
 ```
+
+The log format has to be set to
+
+```
+accesslog.format = "%h|%t|%m|%s|%b|%U|%f|%q|%T|%{User-Agent}i|%{Referer}i"
+```
