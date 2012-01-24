@@ -10,3 +10,10 @@ namespace :client do
     require 'clients/lighttpd/lighttpd'
   end
 end
+
+namespace :router do
+  desc 'start a black hole router for testing'
+  task :blackhole do
+    require 'router/blackhole'
+  end
+end
