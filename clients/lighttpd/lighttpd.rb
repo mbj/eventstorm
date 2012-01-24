@@ -1,9 +1,3 @@
-#!/usr/bin/env ruby
-require 'rubygems'
-require 'bundler/setup'
-require 'ffi-rzmq'
-#require 'json'
-require 'bson'
 require 'socket'
 
 # this script uses the following log format
@@ -33,23 +27,22 @@ publisher.connect('tcp://127.0.0.1:9999')
 puts "beginning with the sends"
 
 until $stdin.eof?
-  event_time = Time.now
-  logline = $stdin.readline.split('|')
-  event = {
-    :event_name => event_types[logline[2]],
-    :event_time => event_time,
-    :event_value => {
-      :http_code          => logline[3],
-      :http_response_size => logline[4],
-      :http_url           => logline[5],
-      :http_filename      => logline[6],
-      :http_query_string  => logline[7],
-      :http_time_taken    => logline[8],
-      :http_user_agent    => logline[9],
-      :http_referer       => logline[10]
-    }
+  logline    = $stdin.readline.split('|')
+  event      = Event.new
+  event.time = Time.now
+  event.name = event_types[logline[2]]
+
+  event.value = {
+    :http_code          => logline[3],
+    :http_response_size => logline[4],
+    :http_url           => logline[5],
+    :http_filename      => logline[6],
+    :http_query_string  => logline[7],
+    :http_time_taken    => logline[8],
+    :http_user_agent    => logline[9],
+    :http_referer       => logline[10]
   }
-  publisher.send_string(BSON::serialize(event).to_s)
+  publisher.send_string(event.to_bson.to_s)
 end
 
 publisher.send_string("End of send #{Time.now}")
