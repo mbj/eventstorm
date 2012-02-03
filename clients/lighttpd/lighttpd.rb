@@ -28,7 +28,7 @@ puts "beginning with the sends"
 
 until $stdin.eof?
   logline    = $stdin.readline.split('|')
-  event      = Event.new
+  event      = Eventstorm::Event.new
   event.time = Time.now
   event.name = event_types[logline[2]]
 

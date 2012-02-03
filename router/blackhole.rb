@@ -24,6 +24,6 @@ while true
   if result != 0
     logger.debug 'error: '+ZMQ::Util.error_string
   end
-  event = Event.from_bson(s)
+  event = Eventstorm::Event.from_bson(s)
   puts "got: #{event.name}"
 end
