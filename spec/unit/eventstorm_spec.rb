@@ -32,19 +32,22 @@ describe Eventstorm do
     end
 
     describe "starting the zmq connection" do
+      # TODO there has to be a way to make this better
+      let (:zmq_socket) { double(ZMQ::Socket) }
+      let (:zmq_context) { double(ZMQ::Context) }
       before do
-        ZMQ::Context.should_receive(:new).with(1).and_return(ZMQ::Context)
+        ZMQ::Context.should_receive(:new).with(1).
+          and_return(zmq_context)
+        zmq_context.should_receive(:socket).with(ZMQ::PUB).
+          and_return(zmq_socket)
+        zmq_socket.should_receive(:connect).with(connstr)
+        zmq_socket.should_receive(:close)
       end
 
-      it "starts a connection to the subscriber" do
+      it "builds a socket and opens the connection" do
         Eventstorm::setup(connstr)
         Eventstorm::close
       end
-    end
-  end
-
-  describe "when stopping the client" do
-    it "closes the connection" do
     end
   end
 

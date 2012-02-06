@@ -7,6 +7,7 @@ class Eventstorm
   end
 
   def self.close
+    @instance.close
     @instance = nil
   end
 
@@ -17,5 +18,11 @@ class Eventstorm
   # class methods
   def initialize(connstr)
     @context = ZMQ::Context.new(1)
+    @socket = @context.socket(ZMQ::PUB)
+    @socket.connect(connstr)
+  end
+
+  def close
+    @socket.close
   end
 end
