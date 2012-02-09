@@ -1,8 +1,6 @@
 require 'spec_helper'
 require 'eventstorm'
 
-# ZMQ.should_receive(:message).with(first_arg,second_arg).and_return(the_result)
-
 describe Eventstorm do
   # set some used defualts and mocks
   let (:connstr) { "tcp://127.0.0.1:32198" }
@@ -68,7 +66,7 @@ describe Eventstorm do
 
     it "uses bson for transport" do
       Eventstorm::fire()
-      BSON::deserialize(get_encoded_message.first
+      BSON::deserialize(get_encoded_message
                        )['event_time'].should == current_time.iso8601
     end
 

@@ -6,10 +6,13 @@ def mock_zmq(connstr)
   zmq_socket.stub(:close)
   zmq_socket.stub(:send_string) do |msg|
     if msg.class == String
-      @messages << msg
+      @messages.push(msg)
     else
       raise PrimitiveFailure, "Unable to write string"
     end
+  end
+  zmq_socket.stub(:receive_string) do
+    @message.shift
   end
   zmq_context = mock("zmq_context")
   zmq_context.stub(:socket).and_return(zmq_socket)
@@ -21,11 +24,15 @@ def mock_zmq_prepare_messages
 end
 
 def get_encoded_message
-  @messages
+  @messages.first
 end
 
 def get_message
   BSON::deserialize(@messages.first)
+end
+
+def push_message msg
+  @messages.push(BSON::serialize(msg).to_s)
 end
 
 # timestamp correction
