@@ -66,17 +66,31 @@ describe Eventstorm do
       Eventstorm::close
     end
 
+    it "uses bson for transport" do
+      Eventstorm::fire()
+      BSON::deserialize(get_encoded_message.first
+                       )['event_time'].should == current_time.iso8601
+    end
+
     it "adds a timestamp" do
       Eventstorm::fire()
-      mock_zmq_get_messages.first.should == {:event_time => current_time.iso8601 }
+      get_message.should == {'event_time' => current_time.iso8601 }
     end
 
     it "fires an event when given a key value pair" do
       Eventstorm::fire(:foo => :bar)
-      mock_zmq_get_messages.first[:foo].should == :bar
+      get_message['foo'].should == :bar
+    end
+
+    it "converts symbol keys to stings" do
+      Eventstorm::fire(:foo => :bar)
+      get_message['foo'].should == :bar
     end
 
     it "fires an event when given a hash of multiple keys" do
+      sample = {'a' => 'b', 'c' => 23, 'event_time' => current_time.to_s}
+      Eventstorm::fire(sample)
+      get_message.should == sample
     end
   end
 end

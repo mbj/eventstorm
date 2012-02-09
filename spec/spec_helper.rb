@@ -1,3 +1,5 @@
+require 'bson'
+
 # this is built with http://www.whatastruggle.com/rspec-and-zeromq as
 # a template
 def mock_zmq(connstr)
@@ -16,8 +18,12 @@ def mock_zmq_prepare_messages
   @messages = []
 end
 
-def mock_zmq_get_messages
+def get_encoded_message
   @messages
+end
+
+def get_message
+  BSON::deserialize(@messages.first)
 end
 
 # timestamp correction
