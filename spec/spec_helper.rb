@@ -5,7 +5,11 @@ def mock_zmq(connstr)
   zmq_socket.stub(:connect).with(connstr)
   zmq_socket.stub(:close)
   zmq_socket.stub(:send_string) do |msg|
-    @messages << msg
+    if msg.class == String
+      @messages << msg
+    else
+      raise PrimitiveFailure, "Unable to write string"
+    end
   end
   zmq_context = mock("zmq_context")
   zmq_context.stub(:socket).and_return(zmq_socket)

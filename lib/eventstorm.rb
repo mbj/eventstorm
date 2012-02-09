@@ -41,7 +41,7 @@ class Eventstorm
   # fires an event
   def fire(attributes)
     @socket.send_string(
-      BSON::serialize(default_values.merge(attributes))
+      BSON::serialize(default_values.merge(attributes)).to_s
     )
   end
 
