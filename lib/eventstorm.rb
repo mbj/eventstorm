@@ -1,3 +1,4 @@
+require 'time'
 require 'ffi-rzmq'
 
 class Eventstorm
@@ -38,6 +39,6 @@ class Eventstorm
 
   # fires an event
   def fire(attributes)
-    @socket.send_string(attributes)
+    @socket.send_string({:event_time => Time.now.iso8601}.merge(attributes))
   end
 end

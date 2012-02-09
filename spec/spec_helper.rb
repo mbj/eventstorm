@@ -19,3 +19,13 @@ end
 def mock_zmq_get_messages
   @messages
 end
+
+# timestamp correction
+def mock_time
+  @timestamp = Time.now
+  Time.stub(:new).and_return(@timestamp)
+end
+
+def current_time
+  @timestamp
+end
