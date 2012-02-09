@@ -39,6 +39,10 @@ class Eventstorm
 
   # fires an event
   def fire(attributes)
-    @socket.send_string({:event_time => Time.now.iso8601}.merge(attributes))
+    @socket.send_string(default_values.merge(attributes))
+  end
+
+  def default_values
+    {:event_time => Time.now.iso8601}
   end
 end
