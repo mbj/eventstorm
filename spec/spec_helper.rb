@@ -1,5 +1,3 @@
-require 'bson'
-
 # this is built with http://www.whatastruggle.com/rspec-and-zeromq as
 # a template
 def mock_zmq(connstr)

@@ -1,4 +1,5 @@
 require 'time'
+require 'bson'
 require 'ffi-rzmq'
 
 class Eventstorm
