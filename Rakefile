@@ -2,7 +2,6 @@ $LOAD_PATH << './'
 require 'rubygems'
 require 'bundler/setup'
 require 'ffi-rzmq'
-require 'lib/event'
 
 namespace :client do
   desc 'start the lighttpd client'
