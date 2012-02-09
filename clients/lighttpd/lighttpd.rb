@@ -1,4 +1,5 @@
 require 'socket'
+require 'eventstorm'
 
 # this script uses the following log format
 # log format for csv
@@ -14,7 +15,6 @@ require 'socket'
 # accesslog.format = "%h|%t|%m|%s|%b|%U|%f|%q|%T|%{User-Agent}i|%{Referer}i"
 
 # build the zmq context
-context = ZMQ::Context.new(1)
 event_source = "http.#{Socket.gethostname}."
 event_types = {}
 ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'].each do |method|
@@ -22,17 +22,15 @@ event_types = {}
 end
 
 # build a publisher socket
-publisher = context.socket(ZMQ::PUB)
-publisher.connect('tcp://127.0.0.1:9999')
+Eventstorm::setup('tcp://127.0.0.1:9999')
 puts "beginning with the sends"
 
 until $stdin.eof?
   logline    = $stdin.readline.split('|')
-  event      = Eventstorm::Event.new
-  event.time = Time.now
-  event.name = event_types[logline[2]]
 
-  event.value = {
+  event = {
+    :event_source       => event_source,
+    :event_name         => event_types[logline[2]],
     :http_code          => logline[3],
     :http_response_size => logline[4],
     :http_url           => logline[5],
@@ -42,9 +40,8 @@ until $stdin.eof?
     :http_user_agent    => logline[9],
     :http_referer       => logline[10]
   }
-  publisher.send_string(event.to_bson.to_s)
+  Eventstorm::fire(event)
 end
 
-publisher.send_string("End of send #{Time.now}")
-publisher.close
+Eventstorm::close
 puts "killed"
