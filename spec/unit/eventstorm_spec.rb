@@ -1,11 +1,14 @@
+require 'spec_helper'
 require 'eventstorm'
-require 'socket'
-require 'ffi-rzmq'
 
 # ZMQ.should_receive(:message).with(first_arg,second_arg).and_return(the_result)
 
 describe Eventstorm do
+  # set some used defualts and mocks
   let (:connstr) { "tcp://127.0.0.1:32198" }
+  let (:zmq_socket) { double(ZMQ::Socket) }
+  let (:zmq_context) { double(ZMQ::Context) }
+  
   describe "when starting a client" do
 
     it "returns the client after setup" do
@@ -33,8 +36,6 @@ describe Eventstorm do
 
     describe "starting the zmq connection" do
       # TODO there has to be a way to make this better
-      let (:zmq_socket) { double(ZMQ::Socket) }
-      let (:zmq_context) { double(ZMQ::Context) }
       before do
         ZMQ::Context.should_receive(:new).with(1).
           and_return(zmq_context)
@@ -51,12 +52,28 @@ describe Eventstorm do
     end
   end
 
-  describe "firing events" do
-    it "fires an event with default values filled" do
+  describe "firing an event" do
+    before do
+      mock_zmq(connstr)
+      Eventstorm::setup(connstr)
+    end
+
+    before :each do
+      mock_zmq_prepare_messages
+    end
+
+    after do
+      Eventstorm::close
+    end
+
+    it "adds a timestamp" do
+      Eventstorm::fire()
+      mock_zmq_get_messages.first.should == {}
     end
 
     it "fires an event when given a key value pair" do
-
+      Eventstorm::fire(:foo => :bar)
+      mock_zmq_get_messages.first.should == {:foo => :bar}
     end
 
     it "fires an event when given a hash of multiple keys" do

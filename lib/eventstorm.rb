@@ -1,3 +1,5 @@
+require 'ffi-rzmq'
+
 class Eventstorm
   # setup the eventstorm client
   # @param connstr - a connection string to the subscriber
@@ -6,13 +8,20 @@ class Eventstorm
     @instance = Eventstorm.new(connstr)
   end
 
+  # close the instance and delete the object completely
   def self.close
     @instance.close
     @instance = nil
   end
 
+  # returns the single instance already built
   def self.instance
     @instance
+  end
+
+  # fires an event
+  def self.fire(attributes = {})
+    @instance.fire(attributes)
   end
 
   # class methods
@@ -22,7 +31,13 @@ class Eventstorm
     @socket.connect(connstr)
   end
 
+  # closes the socket
   def close
     @socket.close
+  end
+
+  # fires an event
+  def fire(attributes)
+    @socket.send_string(attributes)
   end
 end
