@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('bson_ext', '~> 1.5.2')
 
   s.add_development_dependency('rspec',     '< 2.8.0')
+  s.add_development_dependency('rake')
 end
