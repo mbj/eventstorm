@@ -1,22 +1,39 @@
 # this is built with http://www.whatastruggle.com/rspec-and-zeromq as
 # a template
 def mock_zmq(connstr)
-  zmq_socket = mock("zmq_socket")
-  zmq_socket.stub(:connect).with(connstr)
-  zmq_socket.stub(:close)
-  zmq_socket.stub(:send_string) do |msg|
+  @zmq_socket = mock("zmq_socket")
+  @zmq_socket.stub(:close)
+  mock_for_client(connstr)
+  mock_for_server(connstr)
+  @zmq_context = mock("zmq_context")
+  @zmq_context.stub(:socket).and_return(@zmq_socket)
+  ZMQ::Context.stub(:new).and_return(@zmq_context)
+end
+
+# create all stubs for the client
+def mock_for_client(connstr)
+  @zmq_socket.stub(:connect).with(connstr)
+
+  # send_string wants a string to send
+  @zmq_socket.stub(:send_string) do |msg|
     if msg.class == String
       @messages.push(msg)
     else
       raise PrimitiveFailure, "Unable to write string"
     end
   end
-  zmq_socket.stub(:receive_string) do
-    @message.shift
+end
+
+# create the stubs for the server
+def mock_for_server(connstr)
+  @zmq_socket.stub(:bind).with(connstr)
+  #
+  # recv_string want's an object to receive the message
+  @zmq_socket.stub(:recv_string) do |msg|
+    msg.replace(@messages.shift)
+    # this is the return value
+    0
   end
-  zmq_context = mock("zmq_context")
-  zmq_context.stub(:socket).and_return(zmq_socket)
-  ZMQ::Context.stub(:new).and_return(zmq_context)
 end
 
 def mock_zmq_prepare_messages
@@ -33,14 +50,4 @@ end
 
 def push_message msg
   @messages.push(BSON::serialize(msg).to_s)
-end
-
-# timestamp correction
-def mock_time
-  @timestamp = Time.now
-  Time.stub(:new).and_return(@timestamp)
-end
-
-def current_time
-  @timestamp
 end
