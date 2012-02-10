@@ -2,6 +2,18 @@ module Eventstorm
   class Client
     attr_reader :targets
 
+
+    def socket
+      return @socket if defined?(@socket)
+      socket = Eventstorm.zmq_context.socket(ZMQ::PUB)
+
+      @targets.each do |target|
+        socket.connect(target)
+      end
+
+      @socket = socket
+    end
+
   private
 
     # Initializes client
