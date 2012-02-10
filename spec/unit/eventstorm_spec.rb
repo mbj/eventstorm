@@ -4,7 +4,7 @@ require 'eventstorm'
 describe Eventstorm do
   # set some used defualts and mocks
   let (:connstr) { "tcp://127.0.0.1:32198" }
-  let (:current_time) { Time.now }
+  let (:current_time) { Time.now.iso8601 }
   let (:zmq_socket) { double(ZMQ::Socket) }
   let (:zmq_context) { double(ZMQ::Context) }
   
@@ -67,12 +67,12 @@ describe Eventstorm do
     it "uses bson for transport" do
       Eventstorm::fire()
       BSON::deserialize(get_encoded_message
-                       )['event_time'].should == current_time.iso8601
+                       )['event_time'].should == current_time
     end
 
     it "adds a timestamp" do
       Eventstorm::fire()
-      get_message.should == {'event_time' => current_time.iso8601 }
+      get_message.should == {'event_time' => current_time}
     end
 
     it "fires an event when given a key value pair" do
@@ -86,7 +86,7 @@ describe Eventstorm do
     end
 
     it "fires an event when given a hash of multiple keys" do
-      sample = {'a' => 'b', 'c' => 23, 'event_time' => current_time.to_s}
+      sample = {'a' => 'b', 'c' => 23, 'event_time' => current_time}
       Eventstorm::fire(sample)
       get_message.should == sample
     end
