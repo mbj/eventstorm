@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Eventstorm,'.setup' do
-  before :each do
+  after :each do
     # Reset Eventstorm module in prishtine state
     if Eventstorm.instance_variable_defined?(:@client)
       Eventstorm.send(:remove_instance_variable,:@client)

@@ -2,7 +2,6 @@ require 'time'
 require 'bson'
 require 'ffi-rzmq'
 
-require 'eventstorm/helpers'
 require 'eventstorm/client'
 
 module Eventstorm
