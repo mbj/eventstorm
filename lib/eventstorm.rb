@@ -15,18 +15,19 @@ module Eventstorm
   end
 
   def self.setup(target)
-    if defined?(@client)
-      raise 'Evenstorm.setup was already called'
+    if @client
+      raise 'Eventstorm.setup was already called'
     end
+
     @client = Client.new(target)
 
     self
   end
 
   def self.client
-    if defined?(@client)
+    if @client
       return @client
     end
-    raise 'Evenstorm was not setup, call Evenstorm.setup(target)'
+    raise 'Eventstorm was not setup, call Eventstorm.setup(target)'
   end
 end

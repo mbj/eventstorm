@@ -2,27 +2,25 @@ require 'spec_helper'
 
 describe Eventstorm,'.setup' do
   after :each do
-    # Reset Eventstorm module in prishtine state
-    if Eventstorm.instance_variable_defined?(:@client)
-      Eventstorm.send(:remove_instance_variable,:@client)
-    end
+    Eventstorm.instance_variable_set(:@client,nil)
   end
 
   let(:object) { described_class }
+
   subject { object.setup(target) }
 
   context 'when it was not called before accessing client' do
     it 'should raise error' do
       expect do
         object.client.should
-      end.to raise_error(RuntimeError,'Evenstorm was not setup, call Evenstorm.setup(target)')
+      end.to raise_error(RuntimeError,'Eventstorm was not setup, call Eventstorm.setup(target)')
     end
   end
 
   context 'when called' do
     let(:target) { 'tcp://localhost:600' }
 
-    it 'should store instance in Evenstorm.client' do
+    it 'should store instance in Eventstorm.client' do
       subject
       object.client.should be_a(Eventstorm::Client)
     end
@@ -41,7 +39,7 @@ describe Eventstorm,'.setup' do
     let(:target) { 'tcp://localhost:600' }
 
     it 'should raise error' do
-      subject
+      object.setup(target)
       expect { subject }.to raise_error(RuntimeError,'Eventstorm.setup was already called')
     end
   end
