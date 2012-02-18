@@ -2,7 +2,6 @@ module Eventstorm
   class Client
     attr_reader :targets
 
-
     def socket
       return @socket if defined?(@socket)
       socket = Eventstorm.zmq_context.socket(ZMQ::PUB)
@@ -12,6 +11,14 @@ module Eventstorm
       end
 
       @socket = socket
+    end
+
+    def fire(event)
+      if (!event.has_key?('event_time') &&
+          !event.has_key?(:event_time))
+        event['event_time'] = Time.now
+      end
+      @socket.send_string(BSON::serialize(event).to_s)
     end
 
   private
@@ -26,6 +33,9 @@ module Eventstorm
     #
     def initialize(target)
       @targets = [*target].map(&:freeze).freeze
+
+      # TODO clean that up!
+      socket
     end
   end
 end
