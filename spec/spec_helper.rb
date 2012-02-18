@@ -5,14 +5,24 @@ require 'eventstorm'
 class DummySocket
   attr_reader :type
   attr_reader :connects
+  attr_reader :messages
 
   def initialize(type)
     @type = type
     @connects = []
+    @messages = []
   end
 
   def connect(connectstring)
     @connects << connectstring
+  end
+
+  def send_string string
+    @messages.push(string)
+  end
+
+  def decoded_message
+    BSON::deserialize(@messages.shift)
   end
 end
 

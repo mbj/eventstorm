@@ -30,4 +30,8 @@ module Eventstorm
     end
     raise 'Eventstorm was not setup, call Eventstorm.setup(target)'
   end
+
+  def self.fire
+    @client.fire
+  end
 end
