@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Eventstorm,'.setup' do
-  after :each do
+  before :each do
     Eventstorm.instance_variable_set(:@client,nil)
   end
 
