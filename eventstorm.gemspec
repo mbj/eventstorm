@@ -15,4 +15,9 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w(README.md)
 
   s.rubygems_version = '1.8.10'
+
+  s.add_dependency('elasticsearch', '0.0.1')
+  s.add_dependency('adamantium',    '0.0.7')
+  s.add_dependency('abstract_type', '0.0.5')
+  s.add_dependency('composition',   '0.0.1')
 end
