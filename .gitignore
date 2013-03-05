@@ -1,2 +1,4 @@
-Gemfile.lock
-.rvmrc
+/Gemfile.lock
+/.bundle
+/vendor
+/tmp
