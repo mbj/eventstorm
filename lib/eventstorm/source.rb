@@ -29,7 +29,7 @@ module Eventstorm
       #
       def each(&block)
         return to_enum unless block_given?
-        result = index.read({:match_all => {}})
+        result = index.search({:match_all => {}})
         result.hits.map do |foo|
           raise
           p foo

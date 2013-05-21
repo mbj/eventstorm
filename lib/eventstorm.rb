@@ -1,7 +1,7 @@
 require 'abstract_type'
 require 'adamantium'
 require 'concord'
-require 'elasticsearch'
+require 'esearch'
 require 'anima'
 
 # Root namespace

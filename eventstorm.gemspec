@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.rubygems_version = '1.8.10'
 
-  s.add_dependency('elasticsearch', '~> 0.1.1')
+  s.add_dependency('esearch',       '~> 0.2.0')
   s.add_dependency('adamantium',    '~> 0.0.7')
   s.add_dependency('abstract_type', '~> 0.0.5')
   s.add_dependency('concord',       '~> 0.1.1')

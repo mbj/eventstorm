@@ -13,7 +13,7 @@ describe Eventstorm  do
   end
 
   let(:es_cluster) do
-    Elasticsearch::Cluster.connect(ENV.fetch('ELASTICSEARCH_URL', 'http://localhost:9200'))
+    Esearch::Cluster.connect(ENV.fetch('ELASTICSEARCH_URL', 'http://localhost:9200'))
   end
 
   let(:es_index) do
