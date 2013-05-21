@@ -16,7 +16,7 @@ module Eventstorm
     abstract_method :each
 
     class Elasticsearch < self
-      include Composition.new(:index)
+      include Concord.new(:index)
 
       # Enumerate events
       #
@@ -40,7 +40,7 @@ module Eventstorm
 
     # Event source with predefined events
     class Static < self
-      include Composition.new(:events)
+      include Concord.new(:events)
 
       # Enumerate events
       #

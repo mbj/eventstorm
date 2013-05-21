@@ -1,6 +1,6 @@
- 'abstract_type'
+require 'abstract_type'
 require 'adamantium'
-require 'composition'
+require 'concord'
 require 'elasticsearch'
 require 'anima'
 
@@ -62,6 +62,7 @@ module Eventstorm
     end
     self
   end
+
 end
 
 require 'eventstorm/sink'

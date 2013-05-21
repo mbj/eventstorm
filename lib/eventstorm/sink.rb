@@ -52,7 +52,7 @@ module Eventstorm
 
     # Elasticsearch index sink
     class Elasticsearch < self
-      include Composition.new(:index)
+      include Concord.new(:index)
 
       # Push event to sink
       #
